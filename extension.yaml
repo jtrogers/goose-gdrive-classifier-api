@@ -1,0 +1,42 @@
+name: gdrive-classifier-api
+version: 1.0.0
+description: HTTP API for Google Drive document discovery and reporting
+author: jtrogers
+license: MIT
+
+type: http
+http_server:
+  command: python api_server.py
+  port: 0
+  environment:
+    PYTHONPATH: ${EXTENSION_DIR}
+
+dependencies:
+  - python3
+
+config:
+  schema:
+    type: object
+    properties:
+      cache_duration_days:
+        type: integer
+        minimum: 1
+        default: 7
+      max_results_per_page:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 100
+      supported_mime_types:
+        type: array
+        items:
+          type: string
+        default:
+          - application/vnd.google-apps.document
+          - application/vnd.google-apps.spreadsheet
+          - text/plain
+      processor_url:
+        type: string
+        description: URL of the processor MCP service
+    required:
+      - processor_url
